@@ -1,0 +1,204 @@
+vega-element
+[![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg)](https://github.com/PolymerVis/vega-element/releases)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/PolymerVis/vega-element)
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+==========
+
+<!---
+```
+<custom-element-demo>
+  <template is="dom-bind">
+    <link rel="import" href="vega-tooltip.html">
+    <link rel="import" href="vega-signal.html">
+    <link rel="import" href="vega-element.html">
+    <next-code-block></next-code-block>
+  </template>
+</custom-element-demo>
+```
+-->
+```html
+<vega-element tooltip hover
+  vega-spec-url="./demo/barchart.json"></vega-element>
+
+```
+
+`vega-element` is the Polymer element to provide an easy HTML interface to render visualizations for any vega and vega-lite specifications.
+More API documentation and Demos can be found  [here](https://www.webcomponents.org/element/PolymerVis/vega-element)
+
+**Versions details**  
+v2 is a breaking change from v1 as it is an upgrade in major versions for both Polymer and Vega.  
+- [**v2**](https://github.com/PolymerVis/vega-element/tree/polymer2) Supports Polymer 2.0, Vega 3.0, and Vega-lite 2.0
+- [**v1**](https://github.com/PolymerVis/vega-element/tree/polymer1) Supports Polymer 1.0 and Vega 2.0
+
+## Installation
+
+```
+bower install --save vega-element
+```
+
+## Component summary
+
+[Vega](http://vega.github.io/) is a declarative format for creating, saving, and sharing visualization designs. With Vega, visualizations are described in JSON, and generate interactive views using either HTML5 Canvas or SVG.
+
+`vega-element` is the Polymer element to provide an easy HTML interface to render visualizations for any vega and vega-lite specifications.
+
+`vega-signal` and `vega-data` provide data-binding to the `signals` and `data` in the vega runtime.
+
+`vega-data-stream` provide reactive updates to specific entry or entries in the specified data set in vega runtime.
+
+[vega-tooltip](https://github.com/vega/vega-tooltip) the plugin for vega/vegalite is also available in the form of flag `tooltip` and property `tooltip-options` in `vega-element`.
+
+Optional components such as `vega-signal`, `vega-data`, and `vega-data-stream` need to be **imported separately**. However, `vega-elements.html` provides a quick list of all the available components.
+
+### Important notes on *d3*, *vega*, *vega-lite*, *vega-tooltip* dependencies:
+
+`vega-element` depends on various dependencies such as [d3](https://d3js.org/), [vega](https://vega.github.io/vega/), [vega-lite](https://vega.github.io/vega-lite/), and [vega-tooltip](https://github.com/vega/vega-tooltip). However, not all of them are required for all use cases, as such, by default none of these libraries will be included in the `vega-element` import.
+
+Individual libraries can be included normally with `<script>` or through `<link rel="import">` with the provided imports. Either vega or vega-core **MUST** be included for `vega-element` to work. Include vega-core only if d3 needs to be separated from vega (i.e. d3 is used in other parts of the app).
+
+**`vega.html`**  
+Full vega bundle with all dependencies, including d3 modules.
+
+**`vega-core.html`**  
+Smaller vega bundle that excludes redundant d3 files.
+
+**`d3.html`**  
+Full d3 bundle. Not required if `vega.html` is imported. Can be imported together with `vega-core.html`.
+
+**`vega-lite.html`**  
+Full vega-lite bundle. Required only if vega-lite specifications are used.
+
+**`vega-tooltip`**  
+vega-tooltip bundle together with the corresponding stylesheet. Required only if the tooltip plugin is needed.
+
+`vega-element` has built-in mechanism to include the appropriate libraries directly from CDN if they are not included. However, these libraries may not be the most updated versions. The default URLs can be modified through the properties: `vega-src`, `vega-core-src`, `vega-lite-src`, `tooltip-plugin-src`, and `tooltip-plugin-css-src`.
+
+Including the required imports are more efficient than dynamically including the libraries as polymer-cli will able to optimize the build properly.
+
+## Usage
+
+**Basic vega usage**
+```html
+<!-- load via URL to vega specification -->
+<vega-element vega-spec-url="vega-spec.json"></vega-element>
+
+<!-- load via vega specification JSON object -->
+<vega-element vega-spec="[[vegaSpecObject]]"></vega-element>
+```
+
+**Basic vega-lite usage**  
+```html
+<!-- load via URL to vega-lite specification -->
+<vega-element vega-lite-spec-url="vega-lite-spec.json"></vega-element>
+
+<!-- load via vega-lite specification JSON object -->
+<vega-element vega-lite-spec="[[vegaLiteSpecObject]]"></vega-element>
+```
+vega-lite specification is automatically parsed into vega specification and is available as `vega-spec` property.
+```html
+<!-- vegaLiteSpecObject is parse into resultantVegaSpecObject -->
+<vega-element
+  vega-lite-spec="[[vegaLiteSpecObject]]"
+  vega-spec="{{resultantVegaSpecObject}}"></vega-element>
+```
+
+**Enable hover event processing**  
+```html
+<!--
+  By default, hover events are not handled.
+  Add `hover` flag to enable hover event handling.
+ -->
+<vega-element hover vega-spec-url="vega-spec.json"></vega-element>
+```
+
+**Enable tooltip plugin**  
+```html
+<!-- import vega-tooltip plugin -->
+<link rel="import" href="vega-tooltip">
+<!-- Add `tooltip` flag to enable vega-tooltip plugin -->
+<vega-element tooltip
+  tooltip-options="[[tooltipOptions]]"
+  vega-spec-url="vega-spec.json"></vega-element>
+```
+
+`tooltipOptions`
+```javascript
+/**
+ * more customization options at
+ * https://github.com/vega/vega-tooltip/blob/master/docs/customizing_your_tooltip.md
+ */
+{
+  showAllFields: false,
+  fields: [
+    {
+      field: 'category',
+      title: 'Category'
+    },
+    {
+      field: 'amount',
+      title: 'Amount',
+      formatType: 'number',
+      format: ',d'
+    }
+  ],
+  delay: 250,
+  colorTheme: 'light'
+}
+```
+
+**Data-binding to signals**  
+```html
+<!-- import vega-signal -->
+<import rel="import" href="vega-signal">
+
+<!--
+bar chart that takes in a signal "barColor"
+which will update the color to fill the bars
+-->
+<vega-element hover vega-spec-url="barchart.json">
+  <!-- bind variable "barColor" to signal "barColor" -->
+  <vega-signal
+    name="barColor"
+    value="[[barColor]]"></vega-signal>
+</vega-element>
+
+Click to select color [[barColor]] for the bars
+<!--
+a list of colored circles which outputs
+a signal "selectedColor" when clicked upon
+ -->
+<vega-element hover vega-spec-url="colors.json">
+  <!-- bind signal "selectedColor" to variable "barColor" -->
+  <vega-signal
+    name="selectedColor"
+    value="{{barColor}}"></vega-signal>
+</vega-element>
+```
+
+**Data-binding to specified data set**
+```html
+<vega-element vega-lite-spec-url="linechart-vl.json">
+
+  <!-- if name is not provided,
+  the data set to bind to will be the
+  corresponding data set in the same order
+  as specified in the vega specification -->
+  <vega-data
+    name="table"
+    value="{{table}}"></vega-data>
+
+</vega-element>
+```
+
+**reactive updates to specific entry or entries**
+```html
+<vega-element vega-spec-url="barchart.json">
+
+  <vega-data-stream
+    name="table"
+    field="amount"
+    predicate="[[predicate]]"
+    value="[[randomValue]]"></vega-data-stream>
+
+</vega-element>
+```
