@@ -30,8 +30,8 @@
     Load with a URL to the vega or vega-lite specification.
     <demo-snippet>
       <template>
-        <vega-element hover vega-spec-url="barchart.json"></vega-element>
-        <vega-element hover vega-lite-spec-url="barchart-vl.json"></vega-element>
+        <vega-element tooltip hover vega-spec-url="barchart.json"></vega-element>
+        <vega-element tooltip hover vega-lite-spec-url="barchart-vl.json"></vega-element>
       </template>
     </demo-snippet>
 
@@ -47,7 +47,7 @@
               last-response="{{vlSpec}}"></iron-ajax>
 
             <!-- pass specification into vega-element to render -->
-            <vega-element hover vega-lite-spec="[[vlSpec]]" /></vega-element>
+            <vega-element tooltip hover vega-lite-spec="[[vlSpec]]" /></vega-element>
 
             <!-- load vega specification -->
             <iron-ajax auto
@@ -55,7 +55,7 @@
               last-response="{{vegaSpec}}"></iron-ajax>
 
             <!-- pass specification into vega-element to render -->
-            <vega-element hover vega-spec="[[vegaSpec]]"></vega-element>
+            <vega-element tooltip hover vega-spec="[[vegaSpec]]"></vega-element>
 
           </template>
         </dom-bind>

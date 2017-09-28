@@ -1,5 +1,5 @@
 vega-element
-[![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg)](https://github.com/PolymerVis/vega-element/releases)
+[![GitHub release](https://img.shields.io/github/release/PolymerVis/vega-element.svg)](https://github.com/PolymerVis/vega-element/releases)
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/PolymerVis/vega-element)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 ==========
@@ -22,7 +22,7 @@ vega-element
 
 ```
 
-`vega-element` is the Polymer element to provide an easy HTML interface to render visualizations for any vega and vega-lite specifications.
+`vega-element` is the Polymer element to provide an easy HTML interface for [vega](https://vega.github.io/vega) and [vega-lite](https://vega.github.io/vega-lite) visualizations.
 More API documentation and Demos can be found  [here](https://www.webcomponents.org/element/PolymerVis/vega-element)
 
 **Versions details**  
@@ -201,4 +201,19 @@ a signal "selectedColor" when clicked upon
     value="[[randomValue]]"></vega-data-stream>
 
 </vega-element>
+```
+
+**headless mode and exporting SVG or PNG images**
+```html
+<vega-element id="chart"
+  headless
+  vega-spec-url="barchart.json"></vega-element>
+
+<button onclick="javascript:downloadImage('svg')">Download SVG</button>
+<button onclick="javascript:downloadImage('png')">Download PNG</button>
+```
+```javascript
+function downloadImage(type) {
+  return this.$.chart.downloadImage(type);
+}
 ```
